@@ -1,0 +1,40 @@
+sudo: required
+
+# Defacto version and lang used in most Byrde projects.
+language: node_js
+node_js:
+  - "8"
+
+# Cache dependencies.
+cache:
+  directories:
+    - node_modules
+
+# Clean tracked binaries, and package artifact.
+script:
+  - npm install
+  - npm run build
+
+# On script complete, publish artifact to s3.
+deploy:
+  provider: s3
+  access_key_id: ${AWS_ACCESS}
+  secret_access_key: ${AWS_SECRET}
+  bucket: ${AWS_BUCKET}
+  acl: public_read
+  skip_cleanup: true
+  local_dir: build
+  region: us-east-2
+
+# Configure notifications
+notifications:
+  email:
+    recipients:
+      - ${ADMINISTRATIVE_EMAIL}
+    on_success: never
+    on_failure: always
+
+# Branch safeguard
+branches:
+  only:
+    - master
