@@ -1,5 +1,5 @@
 export default {
-  api: "api.stg.simple.reviews"
+  api: "simple-reviews-api-stg.herokuapp.com"
 }
 
 const siteConfig = {
@@ -17,4 +17,8 @@ const themeConfig = {
 
 const language = "english"
 
-export { siteConfig, language, themeConfig }
+export {
+  siteConfig,
+  language,
+  themeConfig
+}

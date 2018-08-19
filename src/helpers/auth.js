@@ -1,12 +1,24 @@
-import SuperFetch from "./super-fetch"
+import SuperFetch, {
+  csrf
+} from "./super-fetch"
 
 class AuthHelper {
   authorize = async userInfo => {
     if (!userInfo.username || !userInfo.password) {
-      return { error: "Please fill in all fields" }
+      return {
+        error: "Please fill in all fields"
+      }
     }
 
-    return await SuperFetch.get("/account/authenticate").then(response => {
+    const {
+      username,
+      password
+    } = userInfo;
+
+    return await SuperFetch.post("/auth/sign-in", {
+      username,
+      password
+    }).then(response => {
       return {
         profile: "Profile",
         token: "test"
@@ -15,7 +27,9 @@ class AuthHelper {
   }
 
   authorized = async () => {
-    return await SuperFetch.post("/account/authenticated").then(response => {
+    csrf();
+
+    return await SuperFetch.get("/auth/signed-in").then(response => {
       return {
         profile: "Profile",
         token: "test"
